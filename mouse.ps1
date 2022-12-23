@@ -1,4 +1,4 @@
-function Reg-Edit {
+function Edit-Regedit {
     param(
         [string]$Path,
         [string]$Name,
@@ -9,10 +9,10 @@ function Reg-Edit {
 }
 
 # set mouse speed to 6 (default)
-Reg-Edit "HKCU:\Control Panel\Mouse" "MouseSensitivity" 10
+Edit-Regedit "HKCU:\Control Panel\Mouse" "MouseSensitivity" 10
 
 # disable acceleration
-Reg-Edit "HKCU:\Control Panel\Mouse" "MouseSpeed" 0
+Edit-Regedit "HKCU:\Control Panel\Mouse" "MouseSpeed" 0
 
 Write-Host "Mouse tweaks applied."
 

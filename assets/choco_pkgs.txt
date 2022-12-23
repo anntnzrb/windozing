@@ -3,6 +3,8 @@
 git
 vscode
 microsoft-windows-terminal
+etcher
+rufus
 
 # apps
 vlc

@@ -1,4 +1,4 @@
-function Run-Script {
+function Invoke-Script {
     param(
         [string]$ScriptPath
     )
@@ -12,9 +12,14 @@ function Run-Script {
 
 
 # Chocolatey
-Run-Script ".\choco.ps1"
+Invoke-Script ".\choco.ps1"
 
 # Mouse tweaks
-Run-Script ".\mouse.ps1"
+Invoke-Script ".\mouse.ps1"
+
+# Cleanup
+Invoke-Script ".\finalize.ps1"
+
+Write-Host "Main script finalized."
 
 pause

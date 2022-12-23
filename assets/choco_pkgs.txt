@@ -1,0 +1,28 @@
+# tools
+7zip
+git
+vscode
+microsoft-windows-terminal
+
+# apps
+vlc
+
+# 
+spotify
+discord
+
+# deps
+directx
+vcredist140
+vcredist2017
+vcredist2015
+vcredist2013
+vcredist2012
+vcredist2010
+vcredist2008
+vcredist2005
+dotnetfx
+dotnetcore
+netfx-4.7.2
+dotnet4.6.2
+dotnet4.5.2

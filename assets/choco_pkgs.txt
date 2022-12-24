@@ -1,17 +1,19 @@
 # tools
 7zip
-git
-vscode
-microsoft-windows-terminal
 etcher
+everything
+git
+microsoft-windows-terminal
+processhacker
 rufus
+vscode
 
 # apps
 vlc
 
 # 
-spotify
 discord
+spotify
 
 # deps
 directx

@@ -25,7 +25,7 @@ function Install-Packages {
     # Read the contents of the package file and filter out empty lines and comments
     $Packages = (Get-Content $PackageFile) | Where-Object { $_ -notmatch '^#' -and $_ -notmatch '^\s*$' }
 
-    choco install -y $Packages | Out-Null
+    choco install -y $Packages
 }
 
 # Install and update
@@ -34,5 +34,3 @@ Update-Chocolatey
 
 # Install packages from file
 Install-Packages "./assets/choco_pkgs.txt"
-
-pause

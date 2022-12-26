@@ -9,11 +9,10 @@ rufus
 vscode
 
 # apps
-vlc
-
-# 
 discord
 spotify
+steam
+vlc
 
 # deps
 directx

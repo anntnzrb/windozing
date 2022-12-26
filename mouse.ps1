@@ -15,5 +15,3 @@ Edit-Regedit "HKCU:\Control Panel\Mouse" "MouseSensitivity" 10
 Edit-Regedit "HKCU:\Control Panel\Mouse" "MouseSpeed" 0
 
 Write-Host "Mouse tweaks applied."
-
-pause

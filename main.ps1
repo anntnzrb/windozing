@@ -10,7 +10,6 @@ function Invoke-Script {
     Write-Host "`n`n---`n`n"
 }
 
-
 # Chocolatey
 Invoke-Script ".\choco.ps1"
 

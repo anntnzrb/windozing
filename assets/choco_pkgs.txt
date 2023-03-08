@@ -1,16 +1,16 @@
 # tools
 7zip
-etcher
 everything
 git
 microsoft-windows-terminal
 processhacker
 rufus
 vscode
+notepadplusplus
 
 # apps
+opera
 discord
-spotify
 steam
 vlc
 

@@ -3,8 +3,8 @@
 Collection of scripts for automating the installation of packages (chocolatey)
 and making a few other system tweaks on Windows systems.
 
-**NOTE:** This repository is experimental, as I do not use Windows as mydaily
-driver.Use at your own risk.
+**NOTE:** This repository is experimental, as I do not use Windows as my daily
+driver. Use at your own risk.
 
 ## Installation
 
@@ -17,6 +17,6 @@ directory in a PowerShell window and run the script you want to use.
 For example, to run the `main.ps1` script, you would enter
 the following command:
 
-```sh
+```powershell
 .\main.ps1
 ```

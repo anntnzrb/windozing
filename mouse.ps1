@@ -1,3 +1,7 @@
+# mouse.ps1 --- Mouse tweaks
+
+# Code:
+
 . ./util.ps1
 
 # set mouse speed to 6th slider (default)

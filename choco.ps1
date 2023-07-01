@@ -1,3 +1,13 @@
+# choco.ps1 --- Chocolatey & Packages installation
+
+# Commentary:
+
+# Install Chocolatey if not present already. Parses a file containing the
+# desired packages and install them.
+# Also updates already installed packages (redundant on first run)
+
+# Code:
+
 function Install-Chocolatey {
     # check if chocolatey is already installed
     if (-not (Test-Path "$env:ChocolateyInstall\choco.exe")) {

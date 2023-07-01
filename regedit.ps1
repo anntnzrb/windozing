@@ -1,5 +1,9 @@
+# regedit.ps1 --- Regedit tweaks
+
 # Resources
 # - https://www.speedguide.net/articles/gaming-tweaks-5812
+
+# Code:
 
 . ./util.ps1
 

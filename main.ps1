@@ -1,3 +1,7 @@
+# main.ps1 --- Entry point
+
+# Code:
+
 . ./util.ps1
 
 # define files to invoke in order

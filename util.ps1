@@ -1,3 +1,12 @@
+# util.ps1 --- Utility file
+
+# Commentary:
+
+# Utility file which serves for abstracting common parts.
+# Usually sourced on many parts of the program.
+
+# Code:
+
 function Restart-Process {
     param ([string] $ProcessName)
 

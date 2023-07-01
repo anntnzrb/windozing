@@ -6,10 +6,11 @@ Invoke-Script ".\choco.ps1"
 # Mouse tweaks
 Invoke-Script ".\mouse.ps1"
 
+# Network tweaks
+Invoke-Script ".\network.ps1"
+
 # Cleanup
 Restart-Process "explorer"
-Write-Host "Done."
-
-Write-Host "Main script finalized."
+Write-Host "=> Script finalized. Consider rebooting."
 
 pause

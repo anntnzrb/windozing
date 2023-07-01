@@ -18,7 +18,18 @@ function Edit-RegistryEntry {
     param(
         [string]$Path,
         [string]$Name,
-        [int]$Value
+        [string]$Value,
+        [switch]$Dec,
+        [switch]$Hex
     )
-    Set-ItemProperty -Path $Path -Name $Name -Value $Value
+
+    if ($Dec) {
+        Set-ItemProperty -Path $Path -Name $Name -Value $Value
+    }
+    elseif ($Hex) {
+        Set-ItemProperty -Path $Path -Name $Name -Value ([UInt32]::Parse($Value, [System.Globalization.NumberStyles]::HexNumber))
+    }
+    else {
+        throw "Please specify either the -dec or -hex flag."
+    }
 }

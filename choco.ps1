@@ -20,27 +20,21 @@ function Update-Packages {
 }
 
 function Get-Packages-File {
-    param(
-        [string]$PackageFile
-    )
+    param([string]$PackageFile)
 
     # read the contents of the package file & filter out empty lines and comments
     return (Get-Content $PackageFile) | Where-Object { $_ -notmatch '^#' -and $_ -notmatch '^\s*$' }
 }
 
 function Install-Package {
-    param(
-        [string]$Package
-    )
+    param([string]$Package)
 
     # install package
     choco install -y $Package
 }
 
 function Install-Packages-From-File {
-    param(
-        [string]$PackageFile
-    )
+    param([string]$PackageFile)
 
     # get the list of packages from file
     $Packages = Get-Packages-File $PackageFile

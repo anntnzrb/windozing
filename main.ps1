@@ -1,14 +1,4 @@
-function Invoke-Script {
-    param(
-        [string]$ScriptPath
-    )
-
-    # Run the script
-    Invoke-Expression $ScriptPath
-
-    # Print a separator
-    Write-Host "`n`n---`n`n"
-}
+. ./util.ps1
 
 # Chocolatey
 Invoke-Script ".\choco.ps1"
@@ -17,7 +7,8 @@ Invoke-Script ".\choco.ps1"
 Invoke-Script ".\mouse.ps1"
 
 # Cleanup
-Invoke-Script ".\finalize.ps1"
+Restart-Process "explorer"
+Write-Host "Done."
 
 Write-Host "Main script finalized."
 

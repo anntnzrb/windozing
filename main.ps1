@@ -6,9 +6,10 @@
 
 # define files to invoke in order
 $files = @(
-    ".\choco.ps1",
+    ".\performance.ps1"
+    ".\network.ps1"
     ".\mouse.ps1",
-    ".\regedit.ps1"
+    ".\choco.ps1"
 )
 
 # loop through each file (script) file and invoke it

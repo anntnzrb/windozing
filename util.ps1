@@ -16,7 +16,8 @@ function Edit-RegistryEntry {
         [string]$Name,
         [string]$Value,
         [switch]$Dec,
-        [switch]$Hex
+        [switch]$Hex,
+        [switch]$String
     )
 
     if ($Dec) {
@@ -25,7 +26,10 @@ function Edit-RegistryEntry {
     elseif ($Hex) {
         Set-ItemProperty -Path $Path -Name $Name -Value ([UInt32]::Parse($Value, [System.Globalization.NumberStyles]::HexNumber))
     }
+    elseif ($String) {
+        Set-ItemProperty -Path $Path -Name $Name -Value $Value -Type ([Microsoft.Win32.RegistryValueKind]::String)
+    }
     else {
-        throw "Please specify either the -dec or -hex flag."
+        throw "Please specify either the -dec, -hex, or -string flag."
     }
 }

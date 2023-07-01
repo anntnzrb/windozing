@@ -4,7 +4,7 @@
 $files = @(
     ".\choco.ps1",
     ".\mouse.ps1",
-    ".\network.ps1"
+    ".\regedit.ps1"
 )
 
 # loop through each file (script) file and invoke it

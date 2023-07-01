@@ -1,36 +1,64 @@
 function Install-Chocolatey {
-    # Check if Chocolatey is already installed
+    # check if chocolatey is already installed
     if (-not (Test-Path "$env:ChocolateyInstall\choco.exe")) {
-        # Set the security protocol
+        # set security protocol
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
 
-        # Download and install Chocolatey
-        iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+        # download & install chocolatey
+        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     }
 }
 
 function Update-Chocolatey {
-    # Upgrade Chocolatey
-    choco upgrade chocolatey
+    # upgrade chocolatey itself
+    choco upgrade chocolatey -y
+}
 
-    # Upgrade all the installed packages
+function Update-Packages {
+    # upgrade all chocolatey packages
     choco upgrade all -y
 }
 
-function Install-Packages {
+function Get-Packages-File {
     param(
         [string]$PackageFile
     )
 
-    # Read the contents of the package file and filter out empty lines and comments
-    $Packages = (Get-Content $PackageFile) | Where-Object { $_ -notmatch '^#' -and $_ -notmatch '^\s*$' }
-
-    choco install -y $Packages
+    # read the contents of the package file & filter out empty lines and comments
+    return (Get-Content $PackageFile) | Where-Object { $_ -notmatch '^#' -and $_ -notmatch '^\s*$' }
 }
 
-# Install and update
+function Install-Package {
+    param(
+        [string]$Package
+    )
+
+    # install package
+    choco install -y $Package
+}
+
+function Install-Packages-From-File {
+    param(
+        [string]$PackageFile
+    )
+
+    # get the list of packages from file
+    $Packages = Get-Packages-File $PackageFile
+
+    # install the packages
+    foreach ($Pkg in $Packages) {
+        Install-Package $Pkg
+    }
+}
+
+# -----------------------------------------------------------------------------
+# main
+# -----------------------------------------------------------------------------
+
+# install & update
 Install-Chocolatey
 Update-Chocolatey
+Update-Packages
 
-# Install packages from file
-Install-Packages "./assets/choco_pkgs.txt"
+# install packages from file
+Install-Packages-From-File "./assets/choco_pkgs.txt"

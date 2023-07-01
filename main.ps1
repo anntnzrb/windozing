@@ -1,15 +1,17 @@
 . ./util.ps1
 
-# Chocolatey
-Invoke-Script ".\choco.ps1"
+# define files to invoke in order
+$files = @(
+    ".\choco.ps1",
+    ".\mouse.ps1",
+    ".\network.ps1"
+)
 
-# Mouse tweaks
-Invoke-Script ".\mouse.ps1"
+# loop through each file (script) file and invoke it
+foreach ($f in $files) {
+    Invoke-Script $f
+}
 
-# Network tweaks
-Invoke-Script ".\network.ps1"
-
-# Cleanup
 Restart-Process "explorer"
 Write-Host "=> Script finalized. Consider rebooting."
 

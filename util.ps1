@@ -7,11 +7,7 @@ function Restart-Process {
 function Invoke-Script {
     param([string]$ScriptPath)
 
-    # Run the script
     Invoke-Expression $ScriptPath
-
-    # Print a separator
-    Write-Host "`n`n---`n`n"
 }
 
 function Edit-RegistryEntry {

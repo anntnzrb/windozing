@@ -8,10 +8,11 @@ rufus
 vscode
 notepadplusplus
 dns-benchmark
+windirstat
 
 # apps
-opera
 discord
+firefox
 steam
 vlc
 

@@ -1,33 +1,67 @@
-# tools
+# -----------------------------------------------------------------------------
+# utils
+# -----------------------------------------------------------------------------
+
 7zip
-everything
-git
-microsoft-windows-terminal
-processhacker
-rufus
-vscode
-notepadplusplus
+anydesk.install
+bulk-crap-uninstaller
 dns-benchmark
+everything
+powertoys
+processhacker.install
 windirstat
 
+# imaging
+rufus
+ventoy
+
+# -----------------------------------------------------------------------------
+# dev tools
+# -----------------------------------------------------------------------------
+
+git.install
+neovim
+notepadplusplus.install
+
+# -----------------------------------------------------------------------------
 # apps
-discord
-firefox
+# -----------------------------------------------------------------------------
+# media
+flameshot
+obs-studio.install
 steam
+sumatrapdf
 vlc
 
-# deps
+# browsers
+brave
+firefox
+
+# comms
+discord.install
+
+# other
+bitwarden
+jdownloader
+qbittorrent
+
+## hardware / drivers
+ddu
 directx
-vcredist140
-vcredist2017
-vcredist2015
-vcredist2013
-vcredist2012
-vcredist2010
-vcredist2008
-vcredist2005
-dotnetfx
-dotnetcore
-netfx-4.7.2
-dotnet4.6.2
-dotnet4.5.2
+
+# -----------------------------------------------------------------------------
+# runtimes / deps
+# -----------------------------------------------------------------------------
+# dotnet
+dotnet-5.0-runtime
+dotnet-6.0-runtime
+dotnet-7.0-runtime
+dotnet-8.0-runtime
+dotnet-runtime
+dotnetcore-runtime
+
+# vc
+vcredist-all
+
+# misc
+winget

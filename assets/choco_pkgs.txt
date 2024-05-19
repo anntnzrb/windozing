@@ -42,6 +42,7 @@ discord.install
 
 # other
 bitwarden
+freedownloadmanager
 jdownloader
 qbittorrent
 

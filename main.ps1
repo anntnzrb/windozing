@@ -1,17 +1,29 @@
-# main.ps1 --- Entry point
-
-# Code:
-
 . ./util.ps1
+
+$Tweaks = @(
+    @{Id = 1; Name = "Performance Tweaks"; ScriptPath = ".\performance.ps1"; 
+      SuccessMessage = "Performance tweaks applied. Explorer restarted."},
+    @{Id = 2; Name = "Network Tweaks"; ScriptPath = ".\network.ps1";
+      SuccessMessage = "Network tweaks applied. Explorer restarted."},
+    @{Id = 3; Name = "Mouse Tweaks"; ScriptPath = ".\mouse.ps1";
+      SuccessMessage = "Mouse tweaks applied. Explorer restarted."},
+    @{Id = 4; Name = "Power Tweaks"; ScriptPath = ".\power.ps1"; 
+      SuccessMessage = "Power tweaks applied. Ultimate Performance plan activated."},
+    @{Id = 5; Name = "Game Tweaks"; ScriptPath = ".\game.ps1";
+      SuccessMessage = "Game tweaks applied. Game Mode and Hardware Accelerated GPU Scheduling disabled.";
+      ExtraMessage = "A system restart is recommended for all changes to take effect."}
+)
+
+function Apply-Tweak {
+    param([hashtable]$Tweak)
+    Write-Host "  > $($Tweak.Name)..." -ForegroundColor DarkYellow
+    Invoke-Script $Tweak.ScriptPath
+}
 
 function Show-Menu {
     Clear-Host
     Write-Host "==== Windows Tweaking Menu ====" -ForegroundColor Cyan
-    Write-Host "1: Performance Tweaks"
-    Write-Host "2: Network Tweaks" 
-    Write-Host "3: Mouse Tweaks"
-    Write-Host "4: Power Tweaks"
-    Write-Host "5: Game Tweaks"
+    $Tweaks | ForEach-Object { Write-Host "$($_.Id): $($_.Name)" }
     Write-Host "6: Apply All Tweaks"
     Write-Host "0: Exit"
     Write-Host "================================" -ForegroundColor Cyan
@@ -20,87 +32,52 @@ function Show-Menu {
 function Invoke-MenuSelection {
     param([string]$Selection)
     
-    switch ($Selection) {
-        '1' {
-            Write-Host "`nApplying performance tweaks..." -ForegroundColor Yellow
-            Invoke-Script ".\performance.ps1"
+    if ($Selection -eq '6') {
+        Write-Host "`nApplying all tweaks..." -ForegroundColor Yellow
+        
+        foreach ($tweak in $Tweaks) {
+            Apply-Tweak $tweak
+        }
+        
+        # Always restart explorer after applying tweaks
+        Write-Host "  > Restarting Explorer..." -ForegroundColor DarkYellow
+        Restart-Process "explorer"
+        
+        Write-Host "`n[SUCCESS] All tweaks applied." -ForegroundColor Green
+        Write-Host "A system reboot is recommended for all changes to take effect." -ForegroundColor Yellow
+    }
+    elseif ($Selection -eq '0') {
+        Write-Host "`nExiting..." -ForegroundColor Yellow
+        return $false
+    }
+    else {
+        $selectedTweak = $Tweaks | Where-Object { $_.Id -eq $Selection }
+        
+        if ($selectedTweak) {
+            Write-Host "`nApplying $($selectedTweak.Name)..." -ForegroundColor Yellow
+            Apply-Tweak $selectedTweak
+            
+            # Always restart explorer after applying any tweak
+            Write-Host "  > Restarting Explorer..." -ForegroundColor DarkYellow
             Restart-Process "explorer"
-            Write-Host "`n[SUCCESS] Performance tweaks applied. Explorer restarted." -ForegroundColor Green
-            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
-            pause
-        }
-        '2' {
-            Write-Host "`nApplying network tweaks..." -ForegroundColor Yellow
-            Invoke-Script ".\network.ps1"
-            Restart-Process "explorer"
-            Write-Host "`n[SUCCESS] Network tweaks applied. Explorer restarted." -ForegroundColor Green
-            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
-            pause
-        }
-        '3' {
-            Write-Host "`nApplying mouse tweaks..." -ForegroundColor Yellow
-            Invoke-Script ".\mouse.ps1"
-            Restart-Process "explorer"
-            Write-Host "`n[SUCCESS] Mouse tweaks applied. Explorer restarted." -ForegroundColor Green
-            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
-            pause
-        }
-        '4' {
-            Write-Host "`nApplying power tweaks..." -ForegroundColor Yellow
-            Invoke-Script ".\power.ps1"
-            Write-Host "`n[SUCCESS] Power tweaks applied. Ultimate Performance plan activated." -ForegroundColor Green
-            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
-            pause
-        }
-        '5' {
-            Write-Host "`nApplying game tweaks..." -ForegroundColor Yellow
-            Invoke-Script ".\game.ps1"
-            Write-Host "`n[SUCCESS] Game tweaks applied. Game Mode and Hardware Accelerated GPU Scheduling disabled." -ForegroundColor Green
-            Write-Host "A system restart is recommended for all changes to take effect." -ForegroundColor Yellow
-            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
-            pause
-        }
-        '6' {
-            Write-Host "`nApplying all tweaks..." -ForegroundColor Yellow
             
-            Write-Host "  > Performance tweaks..." -ForegroundColor DarkYellow
-            Invoke-Script ".\performance.ps1"
+            Write-Host "`n[SUCCESS] $($selectedTweak.SuccessMessage)" -ForegroundColor Green
             
-            Write-Host "  > Network tweaks..." -ForegroundColor DarkYellow
-            Invoke-Script ".\network.ps1"
-            
-            Write-Host "  > Mouse tweaks..." -ForegroundColor DarkYellow
-            Invoke-Script ".\mouse.ps1"
-            
-            Write-Host "  > Power tweaks..." -ForegroundColor DarkYellow
-            Invoke-Script ".\power.ps1"
-            
-            Write-Host "  > Game tweaks..." -ForegroundColor DarkYellow
-            Invoke-Script ".\game.ps1"
-            
-            Restart-Process "explorer"
-            Write-Host "`n[SUCCESS] All tweaks applied. Explorer restarted." -ForegroundColor Green
-            Write-Host "A system reboot is recommended for all changes to take effect." -ForegroundColor Yellow
-            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
-            pause
-        }
-        '0' {
-            Write-Host "`nExiting..." -ForegroundColor Yellow
-            return $false  # Exit
-        }
-        default {
+            if ($selectedTweak.ExtraMessage) {
+                Write-Host "$($selectedTweak.ExtraMessage)" -ForegroundColor Yellow
+            }
+        } 
+        else {
             Write-Host "`n[ERROR] Invalid selection. Please try again." -ForegroundColor Red
-            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
-            pause
         }
     }
-    return $true  # keep showing menu
+    
+    Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
+    [void](Read-Host)
+    return $true
 }
 
-# Main execution loop
-$continue = $true
-while ($continue) {
+do {
     Show-Menu
     $selection = Read-Host "`nPlease make a selection"
-    $continue = Invoke-MenuSelection $selection
-}
+} while (Invoke-MenuSelection $selection)

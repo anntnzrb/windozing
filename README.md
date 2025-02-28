@@ -1,6 +1,6 @@
 # windozing
 
-Collection of scripts for automating the installation of packages (chocolatey)
+Collection of scripts for automating the installation of packages 
 and making a few other system tweaks on Windows systems.
 
 **NOTE:** This repository is experimental, as I do not use Windows as my daily

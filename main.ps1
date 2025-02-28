@@ -9,7 +9,6 @@ $files = @(
     ".\performance.ps1"
     ".\network.ps1"
     ".\mouse.ps1",
-    ".\choco.ps1"
 )
 
 # loop through each file (script) file and invoke it

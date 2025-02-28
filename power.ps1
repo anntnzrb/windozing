@@ -22,5 +22,23 @@ function Enable-UltimatePerformancePlan {
     Write-Host "Ultimate Performance plan is now active."
 }
 
-# Execute by default when script is run directly
+function Disable-UsbSelectiveSuspend {
+    Write-Host "Disabling USB Selective Suspend..."
+    
+    # Get active power scheme GUID
+    $powerScheme = (powercfg -getactivescheme).Split()[3]
+    
+    # Disable USB selective suspend for AC (plugged in)
+    powercfg -setacvalueindex $powerScheme 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0
+    
+    # Disable USB selective suspend for DC (battery)
+    powercfg -setdcvalueindex $powerScheme 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0
+    
+    # Apply the changes
+    powercfg -setactive $powerScheme
+    
+    Write-Host "> USB Selective Suspend disabled for both AC and DC power."
+}
+
 Enable-UltimatePerformancePlan
+Disable-UsbSelectiveSuspend

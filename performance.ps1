@@ -21,3 +21,6 @@ Edit-RegistryEntry "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedi
 
 # LargeSystemCache
 Edit-RegistryEntry "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" "LargeSystemCache" -Dec 0
+
+# Process priority control
+Edit-RegistryEntry "HKLM:\SYSTEM\ControlSet001\Control\PriorityControl" "Win32PrioritySeparation" -Dec 40

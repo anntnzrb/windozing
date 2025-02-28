@@ -11,7 +11,8 @@ function Show-Menu {
     Write-Host "2: Network Tweaks" 
     Write-Host "3: Mouse Tweaks"
     Write-Host "4: Power Tweaks"
-    Write-Host "5: Apply All Tweaks"
+    Write-Host "5: Game Tweaks"
+    Write-Host "6: Apply All Tweaks"
     Write-Host "0: Exit"
     Write-Host "================================" -ForegroundColor Cyan
 }
@@ -52,6 +53,14 @@ function Invoke-MenuSelection {
             pause
         }
         '5' {
+            Write-Host "`nApplying game tweaks..." -ForegroundColor Yellow
+            Invoke-Script ".\game.ps1"
+            Write-Host "`n[SUCCESS] Game tweaks applied. Game Mode and Hardware Accelerated GPU Scheduling disabled." -ForegroundColor Green
+            Write-Host "A system restart is recommended for all changes to take effect." -ForegroundColor Yellow
+            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
+            pause
+        }
+        '6' {
             Write-Host "`nApplying all tweaks..." -ForegroundColor Yellow
             
             Write-Host "  > Performance tweaks..." -ForegroundColor DarkYellow
@@ -65,6 +74,9 @@ function Invoke-MenuSelection {
             
             Write-Host "  > Power tweaks..." -ForegroundColor DarkYellow
             Invoke-Script ".\power.ps1"
+            
+            Write-Host "  > Game tweaks..." -ForegroundColor DarkYellow
+            Invoke-Script ".\game.ps1"
             
             Restart-Process "explorer"
             Write-Host "`n[SUCCESS] All tweaks applied. Explorer restarted." -ForegroundColor Green

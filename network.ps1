@@ -19,5 +19,3 @@ foreach ($key in $interfaceKeys) {
     Edit-RegistryEntry $interfacePath "TcpDelAckTicks" -Dec 0
     Edit-RegistryEntry $interfacePath "TCPNoDelay" -Dec 1
 }
-
-Write-Host "=> Network tweaks applied."

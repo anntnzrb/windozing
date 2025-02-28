@@ -21,5 +21,3 @@ Edit-RegistryEntry "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedi
 
 # LargeSystemCache
 Edit-RegistryEntry "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" "LargeSystemCache" -Dec 0
-
-Write-Host "=> Performance tweaks applied."

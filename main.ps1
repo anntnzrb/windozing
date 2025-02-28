@@ -6,13 +6,13 @@
 
 function Show-Menu {
     Clear-Host
-    Write-Host "==== Windows Tweaking Menu ===="
+    Write-Host "==== Windows Tweaking Menu ====" -ForegroundColor Cyan
     Write-Host "1: Performance Tweaks"
     Write-Host "2: Network Tweaks" 
     Write-Host "3: Mouse Tweaks"
     Write-Host "4: Apply All Tweaks"
     Write-Host "0: Exit"
-    Write-Host "================================"
+    Write-Host "================================" -ForegroundColor Cyan
 }
 
 function Invoke-MenuSelection {
@@ -20,43 +20,64 @@ function Invoke-MenuSelection {
     
     switch ($Selection) {
         '1' {
+            Write-Host "`nApplying performance tweaks..." -ForegroundColor Yellow
             Invoke-Script ".\performance.ps1"
+            Restart-Process "explorer"
+            Write-Host "`n[SUCCESS] Performance tweaks applied. Explorer restarted." -ForegroundColor Green
+            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
             pause
         }
         '2' {
+            Write-Host "`nApplying network tweaks..." -ForegroundColor Yellow
             Invoke-Script ".\network.ps1"
+            Restart-Process "explorer"
+            Write-Host "`n[SUCCESS] Network tweaks applied. Explorer restarted." -ForegroundColor Green
+            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
             pause
         }
         '3' {
+            Write-Host "`nApplying mouse tweaks..." -ForegroundColor Yellow
             Invoke-Script ".\mouse.ps1"
+            Restart-Process "explorer"
+            Write-Host "`n[SUCCESS] Mouse tweaks applied. Explorer restarted." -ForegroundColor Green
+            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
             pause
         }
         '4' {
-            # Apply all tweaks
+            Write-Host "`nApplying all tweaks..." -ForegroundColor Yellow
+            
+            Write-Host "  > Performance tweaks..." -ForegroundColor DarkYellow
             Invoke-Script ".\performance.ps1"
+            
+            Write-Host "  > Network tweaks..." -ForegroundColor DarkYellow
             Invoke-Script ".\network.ps1"
+            
+            Write-Host "  > Mouse tweaks..." -ForegroundColor DarkYellow
             Invoke-Script ".\mouse.ps1"
+            
             Restart-Process "explorer"
-            Write-Host "=> All tweaks applied. Consider rebooting."
+            Write-Host "`n[SUCCESS] All tweaks applied. Explorer restarted." -ForegroundColor Green
+            Write-Host "A system reboot is recommended for all changes to take effect." -ForegroundColor Yellow
+            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
             pause
         }
         '0' {
+            Write-Host "`nExiting..." -ForegroundColor Yellow
             return $false  # Exit
         }
         default {
-            Write-Host "Invalid selection. Please try again."
+            Write-Host "`n[ERROR] Invalid selection. Please try again." -ForegroundColor Red
+            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
             pause
         }
     }
-    return $true  # Continue showing menu
+    return $true  # keep showing menu
 }
 
 # Main execution loop
 $continue = $true
 while ($continue) {
     Show-Menu
-    $selection = Read-Host "Please make a selection"
+    $selection = Read-Host "`nPlease make a selection"
     $continue = Invoke-MenuSelection $selection
 }
-
-Write-Host "Exiting program..."

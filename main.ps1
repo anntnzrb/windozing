@@ -10,7 +10,8 @@ function Show-Menu {
     Write-Host "1: Performance Tweaks"
     Write-Host "2: Network Tweaks" 
     Write-Host "3: Mouse Tweaks"
-    Write-Host "4: Apply All Tweaks"
+    Write-Host "4: Power Tweaks"
+    Write-Host "5: Apply All Tweaks"
     Write-Host "0: Exit"
     Write-Host "================================" -ForegroundColor Cyan
 }
@@ -44,6 +45,13 @@ function Invoke-MenuSelection {
             pause
         }
         '4' {
+            Write-Host "`nApplying power tweaks..." -ForegroundColor Yellow
+            Invoke-Script ".\power.ps1"
+            Write-Host "`n[SUCCESS] Power tweaks applied. Ultimate Performance plan activated." -ForegroundColor Green
+            Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
+            pause
+        }
+        '5' {
             Write-Host "`nApplying all tweaks..." -ForegroundColor Yellow
             
             Write-Host "  > Performance tweaks..." -ForegroundColor DarkYellow
@@ -54,6 +62,9 @@ function Invoke-MenuSelection {
             
             Write-Host "  > Mouse tweaks..." -ForegroundColor DarkYellow
             Invoke-Script ".\mouse.ps1"
+            
+            Write-Host "  > Power tweaks..." -ForegroundColor DarkYellow
+            Invoke-Script ".\power.ps1"
             
             Restart-Process "explorer"
             Write-Host "`n[SUCCESS] All tweaks applied. Explorer restarted." -ForegroundColor Green

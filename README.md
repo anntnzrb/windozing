@@ -21,10 +21,8 @@ windozing/
 │   │   └── game.ps1
 │   └── utilities/         # Utility functions
 │       └── util.ps1
-├── scripts/               # Standalone scripts
-│   └── caps-esc-toggle.ps1
-└── assets/               # Configuration files
-    └── choco_pkgs.txt
+└── scripts/               # Standalone scripts
+    └── caps-esc-toggle.ps1
 ```
 
 ## Installation

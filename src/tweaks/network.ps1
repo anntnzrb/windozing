@@ -5,7 +5,7 @@
 
 # Code:
 
-. ./util.ps1
+. ../utilities/util.ps1
 
 # network throttling index
 Edit-RegistryEntry "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" "NetworkThrottlingIndex" -Hex "ffffffff"

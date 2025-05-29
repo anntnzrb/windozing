@@ -2,7 +2,7 @@
 
 # Code:
 
-. ./util.ps1
+. ../utilities/util.ps1
 
 # set mouse speed to 6th slider (default)
 Edit-RegistryEntry "HKCU:\Control Panel\Mouse" "MouseSensitivity" -Dec 10

@@ -2,7 +2,7 @@
 
 # Code:
 
-. ./util.ps1
+. ../utilities/util.ps1
 
 function Disable-GameMode {
     Write-Host "Disabling Windows Game Mode..."

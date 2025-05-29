@@ -2,7 +2,7 @@
 
 # Code:
 
-. ./util.ps1
+. ../utilities/util.ps1
 
 function Enable-UltimatePerformancePlan {
     # Check if Ultimate Performance plan is installed

@@ -1,15 +1,15 @@
-. ./util.ps1
+. ./src/utilities/util.ps1
 
 $Tweaks = @(
-    @{Id = 1; Name = "Performance Tweaks"; ScriptPath = ".\performance.ps1"; 
+    @{Id = 1; Name = "Performance Tweaks"; ScriptPath = ".\src\tweaks\performance.ps1"; 
       SuccessMessage = "Performance tweaks applied. Explorer restarted."},
-    @{Id = 2; Name = "Network Tweaks"; ScriptPath = ".\network.ps1";
+    @{Id = 2; Name = "Network Tweaks"; ScriptPath = ".\src\tweaks\network.ps1";
       SuccessMessage = "Network tweaks applied. Explorer restarted."},
-    @{Id = 3; Name = "Mouse Tweaks"; ScriptPath = ".\mouse.ps1";
+    @{Id = 3; Name = "Mouse Tweaks"; ScriptPath = ".\src\tweaks\mouse.ps1";
       SuccessMessage = "Mouse tweaks applied. Explorer restarted."},
-    @{Id = 4; Name = "Power Tweaks"; ScriptPath = ".\power.ps1"; 
+    @{Id = 4; Name = "Power Tweaks"; ScriptPath = ".\src\tweaks\power.ps1"; 
       SuccessMessage = "Power tweaks applied. Ultimate Performance plan activated."},
-    @{Id = 5; Name = "Game Tweaks"; ScriptPath = ".\game.ps1";
+    @{Id = 5; Name = "Game Tweaks"; ScriptPath = ".\src\tweaks\game.ps1";
       SuccessMessage = "Game tweaks applied. Game Mode and Hardware Accelerated GPU Scheduling disabled.";
       ExtraMessage = "A system restart is recommended for all changes to take effect."}
 )

@@ -5,7 +5,7 @@
 
 # Code:
 
-. ./util.ps1
+. ../utilities/util.ps1
 
 # system responsiveness
 Edit-RegistryEntry "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" "SystemResponsiveness" -Dec 0

@@ -1,86 +1,183 @@
 #Requires -RunAsAdministrator
 
-# Script to toggle Caps Lock to/from Escape key functionality
+[CmdletBinding()]
+param()
 
-# Configuration
-$RegistryPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout"
-$ValueName    = "Scancode Map"
+using namespace System.Collections.Generic
 
-# Scancode Map bytes for: Caps Lock (003A) -> Escape (0001)
-$MapCapsLockToEscapeBytes = [byte[]](
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x00, 0x00, 0x00,
-    0x01, 0x00, # Escape
-    0x3A, 0x00, # Caps Lock
-    0x00, 0x00, 0x00, 0x00
-)
+enum MappingState {
+    Normal
+    Mapped  
+    Unknown
+}
 
-# Helper Functions
-function Test-ByteArraysEqual {
-    param(
-        [AllowNull()][byte[]]$Array1,
-        [AllowNull()][byte[]]$Array2
-    )
-    if (($null -eq $Array1) -ne ($null -eq $Array2)) { return $false }
-    if ($null -eq $Array1) { return $true }
-    if ($Array1.Length -ne $Array2.Length) { return $false }
-    for ($i = 0; $i -lt $Array1.Length; $i++) {
-        if ($Array1[$i] -ne $Array2[$i]) { return $false }
+class KeyboardConfig {
+    [string]$RegistryPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout"
+    [string]$ValueName = "Scancode Map"
+    [byte]$EscapeKey = 0x01
+    [byte]$CapsLockKey = 0x3A
+    
+    [byte[]] GetScancodeMap() {
+        return [byte[]](
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x02, 0x00, 0x00, 0x00,
+            $this.EscapeKey, 0x00,
+            $this.CapsLockKey, 0x00,
+            0x00, 0x00, 0x00, 0x00
+        )
     }
+}
+
+function Test-ByteArraysEqual {
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param(
+        [AllowNull()][byte[]]$Left,
+        [AllowNull()][byte[]]$Right
+    )
+    
+    if (($null -eq $Left) -ne ($null -eq $Right)) { return $false }
+    if ($null -eq $Left) { return $true }
+    if ($Left.Length -ne $Right.Length) { return $false }
+    
+    for ($i = 0; $i -lt $Left.Length; $i++) {
+        if ($Left[$i] -ne $Right[$i]) { return $false }
+    }
+    
     return $true
 }
 
-# Main Logic
-Write-Host "Caps Lock <-> Escape Key Remapper" -ForegroundColor Yellow
-Write-Host "----------------------------------"
-
-$currentScancodeMap = $null
-try {
-    $currentScancodeMap = Get-ItemPropertyValue -Path $RegistryPath -Name $ValueName -ErrorAction Stop
-}
-catch [System.Management.Automation.PSArgumentException] {
-    # Registry value doesn't exist yet - this is expected
-}
-catch {
-    # Catch any other unexpected errors during Get-ItemPropertyValue
-    Write-Warning "An unexpected error occurred while trying to read the registry: $($_.Exception.Message)"
-}
-
-$isCurrentlyMappedToEscape = Test-ByteArraysEqual -Array1 $currentScancodeMap -Array2 $MapCapsLockToEscapeBytes
-
-# Determine current status and define the action to be taken
-if ($isCurrentlyMappedToEscape) {
-    Write-Host "Current Status: Caps Lock is remapped to ESCAPE."
-    $actionVerb = "Revert"
-    $actionDetails = "Caps Lock from ESCAPE to NORMAL behavior"
-    $registryOperation = { Remove-ItemProperty -Path $RegistryPath -Name $ValueName -Force -ErrorAction Stop }
-    $successStateMessage = "Caps Lock will function as NORMAL after restart."
-} else {
-    if ($null -ne $currentScancodeMap) {
-        Write-Host "Current Status: Caps Lock has an UNKNOWN custom 'Scancode Map'."
-        Write-Warning "The existing 'Scancode Map' is not the specific CapsLock->Escape mapping this script manages."
-        Write-Warning "Proceeding will OVERWRITE this existing custom mapping."
-    } else {
-        Write-Host "Current Status: Caps Lock is behaving NORMALLY (no 'Scancode Map' registry value found)."
-    }
-    $actionVerb = "Remap"
-    $actionDetails = "Caps Lock to function as ESCAPE"
-    $registryOperation = { Set-ItemProperty -Path $RegistryPath -Name $ValueName -Value $MapCapsLockToEscapeBytes -Type Binary -Force -ErrorAction Stop }
-    $successStateMessage = "Caps Lock will function as ESCAPE after restart."
-}
-
-$choice = Read-Host -Prompt "Do you want to $actionVerb $actionDetails? (y/n)"
-
-if ($choice -eq 'y') {
+function Get-CurrentScancodeMap {
+    [CmdletBinding()]
+    [OutputType([byte[]])]
+    param(
+        [Parameter(Mandatory)]
+        [KeyboardConfig]$Config
+    )
+    
     try {
-        & $registryOperation
-        Write-Host "[SUCCESS] Registry updated. $successStateMessage" -ForegroundColor Green
-        Write-Host "A system RESTART is required for changes to take effect." -ForegroundColor Magenta
-    } catch {
-        Write-Error "[FAILURE] Could not $actionVerb registry settings: $($_.Exception.Message)"
+        Get-ItemPropertyValue -Path $Config.RegistryPath -Name $Config.ValueName -ErrorAction Stop
     }
-} else {
-    Write-Host "No changes made."
+    catch [System.Management.Automation.PSArgumentException] {
+        $null
+    }
+    catch {
+        Write-Warning "Error reading registry: $($_.Exception.Message)"
+        $null
+    }
 }
 
-Write-Host "----------------------------------"
+function Get-MappingState {
+    [CmdletBinding()]
+    [OutputType([MappingState])]
+    param(
+        [AllowNull()][byte[]]$Current,
+        [byte[]]$Target
+    )
+    
+    if (Test-ByteArraysEqual -Left $Current -Right $Target) {
+        [MappingState]::Mapped
+    }
+    elseif ($null -eq $Current) {
+        [MappingState]::Normal
+    }
+    else {
+        [MappingState]::Unknown
+    }
+}
+
+function Show-Status {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [MappingState]$State
+    )
+    
+    $messages = @{
+        [MappingState]::Normal = "Current Status: Caps Lock is behaving normally."
+        [MappingState]::Mapped = "Current Status: Caps Lock is remapped to Escape."
+        [MappingState]::Unknown = "Current Status: Caps Lock has an unknown custom mapping."
+    }
+    
+    Write-Host $messages[$State]
+    
+    if ($State -eq [MappingState]::Unknown) {
+        Write-Warning "Proceeding will overwrite the existing custom mapping."
+    }
+}
+
+function Confirm-Action {
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Verb,
+        [Parameter(Mandatory)]
+        [string]$Details
+    )
+    
+    $response = Read-Host "Do you want to $Verb $Details? (y/n)"
+    $response -eq 'y'
+}
+
+function Invoke-RegistryChange {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [KeyboardConfig]$Config,
+        [Parameter(Mandatory)]
+        [MappingState]$CurrentState,
+        [Parameter(Mandatory)]
+        [string]$ActionVerb
+    )
+    
+    try {
+        switch ($CurrentState) {
+            ([MappingState]::Mapped) {
+                Remove-ItemProperty -Path $Config.RegistryPath -Name $Config.ValueName -Force -ErrorAction Stop
+                $successMsg = "Caps Lock will function normally after restart."
+            }
+            default {
+                Set-ItemProperty -Path $Config.RegistryPath -Name $Config.ValueName -Value $Config.GetScancodeMap() -Type Binary -Force -ErrorAction Stop
+                $successMsg = "Caps Lock will function as Escape after restart."
+            }
+        }
+        
+        Write-Host "[SUCCESS] Registry updated. $successMsg" -ForegroundColor Green
+        Write-Host "A system restart is required for changes to take effect." -ForegroundColor Magenta
+    }
+    catch {
+        Write-Error "Could not $ActionVerb registry settings: $($_.Exception.Message)"
+    }
+}
+
+function Start-CapsLockEscapeToggle {
+    [CmdletBinding()]
+    param()
+    
+    Write-Host "Caps Lock <-> Escape Key Remapper" -ForegroundColor Yellow
+    Write-Host ("=" * 34)
+    
+    $config = [KeyboardConfig]::new()
+    $targetMap = $config.GetScancodeMap()
+    $currentMap = Get-CurrentScancodeMap -Config $config
+    $state = Get-MappingState -Current $currentMap -Target $targetMap
+    
+    Show-Status -State $state
+    
+    $action = switch ($state) {
+        ([MappingState]::Mapped) { @{ Verb = "Revert"; Details = "Caps Lock from Escape to normal behavior" } }
+        default { @{ Verb = "Remap"; Details = "Caps Lock to function as Escape" } }
+    }
+    
+    if (Confirm-Action -Verb $action.Verb -Details $action.Details) {
+        Invoke-RegistryChange -Config $config -CurrentState $state -ActionVerb $action.Verb
+    }
+    else {
+        Write-Host "No changes made."
+    }
+    
+    Write-Host ("=" * 34)
+}
+
+Start-CapsLockEscapeToggle

@@ -1,5 +1,5 @@
 # Install.ps1 - Windozing module installer
-# Usage: iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/yourusername/windozing/main/Install.ps1'))
+# Usage: irm https://raw.githubusercontent.com/anntnzrb/windozing/main/Install.ps1 | iex
 
 [CmdletBinding()]
 param(

@@ -40,14 +40,8 @@ windozing/
 
 ### Quick Install (Recommended)
 ```powershell
-iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/yourusername/windozing/main/Install.ps1'))
+irm https://raw.githubusercontent.com/anntnzrb/windozing/main/Install.ps1 | iex
 ```
-
-### Manual Installation
-1. Download or clone this repository
-2. Copy the `windozing/windozing` folder to your PowerShell modules directory:
-   - `$env:USERPROFILE\Documents\WindowsPowerShell\Modules\windozing`
-3. Import the module: `Import-Module windozing`
 
 ## Usage
 

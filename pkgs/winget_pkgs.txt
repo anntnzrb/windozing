@@ -1,0 +1,5 @@
+# Winget Package List
+# Format: PackageId
+# Lines starting with # are comments and will be ignored
+
+Notepad++.Notepad++

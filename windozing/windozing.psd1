@@ -68,7 +68,8 @@ NestedModules = @(
     'src\utilities\Registry.ps1',
     'src\utilities\Process.ps1',
     'src\utilities\System.ps1',
-    'src\utilities\Network.ps1'
+    'src\utilities\Network.ps1',
+    'src\utilities\Winget.ps1'
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -153,7 +154,16 @@ FunctionsToExport = @(
     'Get-NetworkInterfaceTweakPaths',
     'Apply-NetworkInterfaceTweaks',
     'Test-NetworkConnectivity',
-    'Get-NetworkAdapterInfo'
+    'Get-NetworkAdapterInfo',
+    
+    # Winget utilities
+    'Test-WingetInstalled',
+    'Install-Winget',
+    'Update-Winget',
+    'Initialize-Winget',
+    'Get-WingetPackageList',
+    'Install-WingetPackage',
+    'Install-WingetPackages'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

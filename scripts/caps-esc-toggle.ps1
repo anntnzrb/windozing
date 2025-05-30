@@ -2,7 +2,7 @@
 
 # Script to toggle Caps Lock to/from Escape key functionality
 
-# --- Configuration ---
+# Configuration
 $RegistryPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout"
 $ValueName    = "Scancode Map"
 
@@ -15,7 +15,7 @@ $MapCapsLockToEscapeBytes = [byte[]](
     0x00, 0x00, 0x00, 0x00
 )
 
-# --- Helper Function: Compare Byte Arrays ---
+# Helper Functions
 function Test-ByteArraysEqual {
     param(
         [AllowNull()][byte[]]$Array1,
@@ -30,20 +30,16 @@ function Test-ByteArraysEqual {
     return $true
 }
 
-# --- Main Script Logic ---
+# Main Logic
 Write-Host "Caps Lock <-> Escape Key Remapper" -ForegroundColor Yellow
 Write-Host "----------------------------------"
 
-# Initialize $currentScancodeMap to $null
 $currentScancodeMap = $null
 try {
-    # Attempt to get the Scancode Map value
-    $currentScancodeMap = Get-ItemPropertyValue -Path $RegistryPath -Name $ValueName -ErrorAction Stop # ErrorAction Stop to ensure catch block is hit
+    $currentScancodeMap = Get-ItemPropertyValue -Path $RegistryPath -Name $ValueName -ErrorAction Stop
 }
 catch [System.Management.Automation.PSArgumentException] {
-    # This specific exception occurs when the property does not exist.
-    # We expect this if the Scancode Map hasn't been set, so we do nothing here.
-    # $currentScancodeMap remains $null, which is the desired state.
+    # Registry value doesn't exist yet - this is expected
 }
 catch {
     # Catch any other unexpected errors during Get-ItemPropertyValue

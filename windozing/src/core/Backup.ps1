@@ -55,7 +55,6 @@ function New-RegistryBackup {
     $backupId = [Guid]::NewGuid().ToString()
     $backupDir = Join-Path $script:BackupPath $backupId
     
-    # Create backup directory
     New-Item -ItemType Directory -Path $backupDir -Force | Out-Null
     
     $backupInfo = @{
@@ -68,7 +67,6 @@ function New-RegistryBackup {
         metadata = $Metadata
     }
     
-    # Backup each registry path
     foreach ($regPath in $RegistryPaths) {
         try {
             $fileName = $regPath -replace '[:\\]', '_'
@@ -101,11 +99,9 @@ function New-RegistryBackup {
         }
     }
     
-    # Save backup metadata
     $metadataPath = Join-Path $backupDir "backup-info.json"
     $backupInfo | ConvertTo-Json -Depth 5 | Set-Content $metadataPath -Encoding UTF8
     
-    # Update backup history
     $script:BackupHistory += $backupInfo
     Save-BackupHistory
     

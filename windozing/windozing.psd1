@@ -1,5 +1,4 @@
 # Module manifest for module 'windozing'
-# Generated on: 2025-01-29
 
 @{
 

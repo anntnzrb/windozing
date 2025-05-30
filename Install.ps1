@@ -49,13 +49,11 @@ $zipPath = Join-Path $tempPath "windozing.zip"
 $extractPath = Join-Path $tempPath "extract"
 
 try {
-    # Create temp directory
     if (Test-Path $tempPath) {
         Remove-Item -Path $tempPath -Recurse -Force
     }
     New-Item -ItemType Directory -Path $tempPath -Force | Out-Null
     
-    # Download repository
     Write-Host "Downloading windozing from GitHub..." -ForegroundColor Gray
     $downloadUrl = "https://github.com/yourusername/windozing/archive/refs/heads/$Branch.zip"
     
@@ -67,14 +65,11 @@ try {
         return
     }
     
-    # Extract archive
     Write-Host "Extracting files..." -ForegroundColor Gray
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
     
-    # Find the extracted folder (GitHub adds branch name to folder)
     $sourceFolder = Get-ChildItem -Path $extractPath -Directory | Select-Object -First 1
     
-    # Copy module files from windozing subdirectory
     Write-Host "Installing module files..." -ForegroundColor Gray
     $moduleSourcePath = Join-Path $sourceFolder.FullName "windozing"
     
@@ -86,7 +81,6 @@ try {
         return
     }
     
-    # Import module to verify installation
     Write-Host "Verifying installation..." -ForegroundColor Gray
     Import-Module $InstallPath -Force -ErrorAction Stop
     
@@ -104,19 +98,16 @@ try {
 catch {
     Write-Error "Installation failed: $_"
     
-    # Cleanup on failure
     if (Test-Path $InstallPath) {
         Remove-Item -Path $InstallPath -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
 finally {
-    # Cleanup temp files
     if (Test-Path $tempPath) {
         Remove-Item -Path $tempPath -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
 
-# Add module to profile if requested
 if ($isAdmin) {
     $addToProfile = Read-Host "Would you like to automatically import windozing in your PowerShell profile? (Y/N)"
     if ($addToProfile -eq 'Y') {

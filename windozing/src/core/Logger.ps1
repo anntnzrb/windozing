@@ -76,7 +76,6 @@ function Write-Log {
     # File output
     if ($script:LogConfig.FileOutput) {
         try {
-            # Check file size and rotate if needed
             if (Test-Path $script:LogConfig.FilePath) {
                 $fileInfo = Get-Item $script:LogConfig.FilePath
                 if ($fileInfo.Length -gt $script:LogConfig.MaxFileSize) {
@@ -119,7 +118,6 @@ function Rotate-LogFile {
         }
     }
     
-    # Move current log to .1
     if (Test-Path $basePath) {
         $firstArchive = Join-Path $directory "$fileName.1$extension"
         Move-Item $basePath $firstArchive -Force

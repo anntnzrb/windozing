@@ -27,7 +27,6 @@ function Edit-RegistryEntry {
         [switch]$Force
     )
     
-    # Import validation module if not already loaded
     if (-not (Get-Command Test-SafeRegistryPath -ErrorAction SilentlyContinue)) {
         Import-Module "$PSScriptRoot\..\core\Validation.ps1" -Force
     }

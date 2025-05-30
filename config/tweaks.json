@@ -80,7 +80,7 @@
       },
       {
         "id": "priority-separation",
-        "path": "HKLM:\\SYSTEM\\ControlSet001\\Control\\PriorityControl",
+        "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl",
         "key": "Win32PrioritySeparation",
         "value": 40,
         "type": "DWord",

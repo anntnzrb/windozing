@@ -67,7 +67,7 @@ This document provides detailed information about each tweak available in windoz
 ### Process Priority
 
 #### Win32 Priority Separation
-- **Registry Path**: `HKLM:\SYSTEM\ControlSet001\Control\PriorityControl`
+- **Registry Path**: `HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl`
 - **Key**: `Win32PrioritySeparation`
 - **Value**: 40 (hex: 0x28)
 - **Description**: Optimizes CPU scheduling for foreground applications with variable quantum length.

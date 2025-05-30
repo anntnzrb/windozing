@@ -68,7 +68,8 @@ NestedModules = @(
     'src\core\Validation.ps1',
     'src\utilities\Registry.ps1',
     'src\utilities\Process.ps1',
-    'src\utilities\System.ps1'
+    'src\utilities\System.ps1',
+    'src\utilities\Network.ps1'
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -144,7 +145,16 @@ FunctionsToExport = @(
     'Test-Feature',
     'Test-Service',
     'Get-DiskUsage',
-    'Invoke-SystemCommand'
+    'Invoke-SystemCommand',
+    
+    # Network utilities
+    'Get-NetworkInterfaces',
+    'Get-NetworkInterfaceProperty',
+    'Set-NetworkInterfaceProperty',
+    'Get-NetworkInterfaceTweakPaths',
+    'Apply-NetworkInterfaceTweaks',
+    'Test-NetworkConnectivity',
+    'Get-NetworkAdapterInfo'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

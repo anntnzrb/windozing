@@ -1,48 +1,72 @@
 # windozing
 
-Collection of scripts for automating the installation of packages 
-and making a few other system tweaks on Windows systems.
+A PowerShell module for applying Windows system optimizations and tweaks with comprehensive safety features including backup/restore, validation, and configuration management.
 
-**NOTE:** This repository is experimental, as I do not use Windows as my daily
-driver. Use at your own risk.
+**NOTE:** This repository is experimental. Use at your own risk and always create backups before applying system tweaks.
 
 ## Project Structure
 
 ```
 windozing/
-├── main.ps1                # Main menu script
-├── run.bat                 # Admin launcher
+├── windozing.psd1          # PowerShell module manifest
+├── windozing.psm1          # Main module file
+├── Install.ps1             # One-line installer script
 ├── src/
-│   ├── tweaks/            # System tweak scripts
-│   │   ├── performance.ps1
-│   │   ├── network.ps1
-│   │   ├── mouse.ps1
-│   │   ├── power.ps1
-│   │   └── game.ps1
-│   └── utilities/         # Utility functions
-│       └── util.ps1
+│   ├── core/              # Core infrastructure modules
+│   │   ├── Config.ps1     # Configuration management
+│   │   ├── Logger.ps1     # Logging functionality
+│   │   ├── Backup.ps1     # Backup/restore system
+│   │   └── Validation.ps1 # Input validation
+│   └── utilities/         # System utility modules
+│       ├── Registry.ps1   # Registry operations
+│       ├── Network.ps1    # Network interface management
+│       ├── Power.ps1      # Power management
+│       ├── Process.ps1    # Process management
+│       └── System.ps1     # System information
+├── config/                # Configuration files
+│   ├── tweaks.json        # Tweak definitions
+│   └── defaults.json      # Default settings
+├── docs/                  # Documentation
+│   ├── TWEAKS.md          # Detailed tweak documentation
+│   └── SAFETY.md          # Safety guidelines
 └── scripts/               # Standalone scripts
     └── caps-esc-toggle.ps1
 ```
 
 ## Installation
 
-To use the scripts in this repository, you will need to have
-[PowerShell](https://docs.microsoft.com/en-us/powershell/).
+### Quick Install (Recommended)
+```powershell
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/yourusername/windozing/main/Install.ps1'))
+```
+
+### Manual Installation
+1. Download or clone this repository
+2. Copy the windozing folder to your PowerShell modules directory:
+   - `$env:USERPROFILE\Documents\WindowsPowerShell\Modules\windozing`
+3. Import the module: `Import-Module windozing`
 
 ## Usage
 
-To use the scripts in this repository, navigate to the repository
-directory in a PowerShell window and run the script you want to use.
-For example, to run the `main.ps1` script, you would enter
-the following command:
-
+### Interactive Menu
 ```powershell
-.\main.ps1
+Import-Module windozing
+Show-Menu
 ```
 
-Or use the batch file for automatic admin elevation:
+### Command Line Usage
+```powershell
+# Apply specific tweak categories
+Invoke-Tweak -Category performance -BackupFirst
 
-```batch
-run.bat
+# Apply with dry run (preview changes)
+Invoke-Tweak -Category network -DryRun
+
+# List available tweaks
+Get-AvailableTweaks
+
+# Backup management
+New-RegistryBackup -Name "before-tweaks"
+Get-RegistryBackup
+Restore-RegistryBackup -Id "backup-id"
 ```

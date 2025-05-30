@@ -74,23 +74,16 @@ try {
     # Find the extracted folder (GitHub adds branch name to folder)
     $sourceFolder = Get-ChildItem -Path $extractPath -Directory | Select-Object -First 1
     
-    # Copy module files
+    # Copy module files from windozing subdirectory
     Write-Host "Installing module files..." -ForegroundColor Gray
-    $filesToCopy = @(
-        "windozing.psd1",
-        "windozing.psm1",
-        "src",
-        "config",
-        "scripts",
-        "README.md",
-        "COPYING"
-    )
+    $moduleSourcePath = Join-Path $sourceFolder.FullName "windozing"
     
-    foreach ($file in $filesToCopy) {
-        $sourcePath = Join-Path $sourceFolder.FullName $file
-        if (Test-Path $sourcePath) {
-            Copy-Item -Path $sourcePath -Destination $InstallPath -Recurse -Force
-        }
+    if (Test-Path $moduleSourcePath) {
+        Copy-Item -Path "$moduleSourcePath\*" -Destination $InstallPath -Recurse -Force
+    }
+    else {
+        Write-Error "Module files not found in extracted archive"
+        return
     }
     
     # Import module to verify installation

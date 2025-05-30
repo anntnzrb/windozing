@@ -8,29 +8,32 @@ A PowerShell module for applying Windows system optimizations and tweaks with co
 
 ```
 windozing/
-├── windozing.psd1          # PowerShell module manifest
-├── windozing.psm1          # Main module file
 ├── Install.ps1             # One-line installer script
-├── src/
-│   ├── core/              # Core infrastructure modules
-│   │   ├── Config.ps1     # Configuration management
-│   │   ├── Logger.ps1     # Logging functionality
-│   │   ├── Backup.ps1     # Backup/restore system
-│   │   └── Validation.ps1 # Input validation
-│   └── utilities/         # System utility modules
-│       ├── Registry.ps1   # Registry operations
-│       ├── Network.ps1    # Network interface management
-│       ├── Power.ps1      # Power management
-│       ├── Process.ps1    # Process management
-│       └── System.ps1     # System information
-├── config/                # Configuration files
-│   ├── tweaks.json        # Tweak definitions
-│   └── defaults.json      # Default settings
-├── docs/                  # Documentation
-│   ├── TWEAKS.md          # Detailed tweak documentation
-│   └── SAFETY.md          # Safety guidelines
-└── scripts/               # Standalone scripts
-    └── caps-esc-toggle.ps1
+├── README.md               # This file
+├── COPYING                 # License file
+├── scripts/               # Standalone scripts
+│   └── caps-esc-toggle.ps1
+└── windozing/             # PowerShell module directory
+    ├── windozing.psd1     # Module manifest
+    ├── windozing.psm1     # Main module file
+    ├── src/               # Module source code
+    │   ├── core/          # Core infrastructure modules
+    │   │   ├── Config.ps1     # Configuration management
+    │   │   ├── Logger.ps1     # Logging functionality
+    │   │   ├── Backup.ps1     # Backup/restore system
+    │   │   └── Validation.ps1 # Input validation
+    │   └── utilities/     # System utility modules
+    │       ├── Registry.ps1   # Registry operations
+    │       ├── Network.ps1    # Network interface management
+    │       ├── Power.ps1      # Power management
+    │       ├── Process.ps1    # Process management
+    │       └── System.ps1     # System information
+    ├── config/            # Configuration files
+    │   ├── tweaks.json    # Tweak definitions
+    │   └── defaults.json  # Default settings
+    └── docs/              # Documentation
+        ├── TWEAKS.md      # Detailed tweak documentation
+        └── SAFETY.md      # Safety guidelines
 ```
 
 ## Installation
@@ -42,7 +45,7 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercon
 
 ### Manual Installation
 1. Download or clone this repository
-2. Copy the windozing folder to your PowerShell modules directory:
+2. Copy the `windozing/windozing` folder to your PowerShell modules directory:
    - `$env:USERPROFILE\Documents\WindowsPowerShell\Modules\windozing`
 3. Import the module: `Import-Module windozing`
 

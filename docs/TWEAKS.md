@@ -135,17 +135,17 @@ This document provides detailed information about each tweak available in windoz
 
 ## Power Tweaks
 
+**Note**: Power tweaks use system commands rather than registry modifications for better reliability and safety.
+
 ### Ultimate Performance Power Plan
-- **Command**: `powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61`
-- **Description**: Enables the hidden "Ultimate Performance" power plan designed for high-end systems, eliminating micro-latencies.
+- **Implementation**: System command (`powercfg -duplicatescheme`)
+- **GUID**: `e9a42b02-d5df-448d-aa00-03f14749eb61`
+- **Description**: Enables the hidden "Ultimate Performance" power plan designed for high-end workstations and gaming systems. This plan eliminates micro-latencies by preventing CPU cores from parking and maintaining maximum performance states.
 
 ### USB Selective Suspend
-- **Commands**:
-  ```powershell
-  powercfg /SETACVALUEINDEX SCHEME_CURRENT 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0
-  powercfg /SETDCVALUEINDEX SCHEME_CURRENT 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0
-  ```
-- **Description**: Disables USB selective suspend to prevent USB devices from being powered down, which can cause input lag or disconnections.
+- **Implementation**: System commands (`powercfg /SETACVALUEINDEX`, `powercfg /SETDCVALUEINDEX`)
+- **Setting**: Disabled (value: 0)
+- **Description**: Disables USB selective suspend feature to prevent USB devices (mice, keyboards, headsets) from being automatically powered down during idle periods. This prevents input lag, device disconnections, and wake-up delays.
 
 ## Important Notes
 
@@ -224,7 +224,7 @@ This document provides detailed information about each tweak available in windoz
 ## Risk Levels
 
 - **Low Risk**: Mouse, Gaming, Privacy tweaks - Generally safe for all systems
-- **Medium Risk**: Performance, Network tweaks - May need adjustment based on hardware
+- **Medium Risk**: Performance, Network, Power tweaks - May need adjustment based on hardware/configuration
 - **High Risk**: None currently (removed from default configuration)
 
 ## Troubleshooting

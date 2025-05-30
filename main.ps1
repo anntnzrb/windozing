@@ -1,83 +1,35 @@
-. ./src/utilities/util.ps1
+# main.ps1 - Entry point for windozing module
 
-$Tweaks = @(
-    @{Id = 1; Name = "Performance Tweaks"; ScriptPath = ".\src\tweaks\performance.ps1"; 
-      SuccessMessage = "Performance tweaks applied. Explorer restarted."},
-    @{Id = 2; Name = "Network Tweaks"; ScriptPath = ".\src\tweaks\network.ps1";
-      SuccessMessage = "Network tweaks applied. Explorer restarted."},
-    @{Id = 3; Name = "Mouse Tweaks"; ScriptPath = ".\src\tweaks\mouse.ps1";
-      SuccessMessage = "Mouse tweaks applied. Explorer restarted."},
-    @{Id = 4; Name = "Power Tweaks"; ScriptPath = ".\src\tweaks\power.ps1"; 
-      SuccessMessage = "Power tweaks applied. Ultimate Performance plan activated."},
-    @{Id = 5; Name = "Game Tweaks"; ScriptPath = ".\src\tweaks\game.ps1";
-      SuccessMessage = "Game tweaks applied. Game Mode and Hardware Accelerated GPU Scheduling disabled.";
-      ExtraMessage = "A system restart is recommended for all changes to take effect."}
-)
+# Import windozing module
+$modulePath = Split-Path -Parent $MyInvocation.MyCommand.Path
+Import-Module "$modulePath\windozing.psd1" -Force -ErrorAction Stop
 
-function Apply-Tweak {
-    param([hashtable]$Tweak)
-    Write-Host "  > $($Tweak.Name)..." -ForegroundColor DarkYellow
-    Invoke-Script $Tweak.ScriptPath
-}
-
-function Show-Menu {
-    Clear-Host
-    Write-Host "==== Windows Tweaking Menu ====" -ForegroundColor Cyan
-    $Tweaks | ForEach-Object { Write-Host "$($_.Id): $($_.Name)" }
-    Write-Host "6: Apply All Tweaks"
-    Write-Host "0: Exit"
-    Write-Host "================================" -ForegroundColor Cyan
-}
-
-function Invoke-MenuSelection {
-    param([string]$Selection)
+# Check if running as administrator
+if (-not (Test-IsAdministrator)) {
+    Write-Warning "This script requires administrator privileges."
+    Write-Host ""
     
-    if ($Selection -eq '6') {
-        Write-Host "`nApplying all tweaks..." -ForegroundColor Yellow
-        
-        foreach ($tweak in $Tweaks) {
-            Apply-Tweak $tweak
-        }
-        
-        # Always restart explorer after applying tweaks
-        Write-Host "  > Restarting Explorer..." -ForegroundColor DarkYellow
-        Restart-Process "explorer"
-        
-        Write-Host "`n[SUCCESS] All tweaks applied." -ForegroundColor Green
-        Write-Host "A system reboot is recommended for all changes to take effect." -ForegroundColor Yellow
-    }
-    elseif ($Selection -eq '0') {
-        Write-Host "`nExiting..." -ForegroundColor Yellow
-        return $false
+    # Attempt to restart as admin
+    $response = Read-Host "Would you like to restart PowerShell as Administrator? (Y/N)"
+    if ($response -eq 'Y') {
+        Start-Process powershell.exe -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+        exit
     }
     else {
-        $selectedTweak = $Tweaks | Where-Object { $_.Id -eq $Selection }
-        
-        if ($selectedTweak) {
-            Write-Host "`nApplying $($selectedTweak.Name)..." -ForegroundColor Yellow
-            Apply-Tweak $selectedTweak
-            
-            # Always restart explorer after applying any tweak
-            Write-Host "  > Restarting Explorer..." -ForegroundColor DarkYellow
-            Restart-Process "explorer"
-            
-            Write-Host "`n[SUCCESS] $($selectedTweak.SuccessMessage)" -ForegroundColor Green
-            
-            if ($selectedTweak.ExtraMessage) {
-                Write-Host "$($selectedTweak.ExtraMessage)" -ForegroundColor Yellow
-            }
-        } 
-        else {
-            Write-Host "`n[ERROR] Invalid selection. Please try again." -ForegroundColor Red
-        }
+        Write-Host "Some tweaks may not work without administrator privileges." -ForegroundColor Yellow
+        Write-Host ""
     }
-    
-    Write-Host "`nPress any key to return to the menu..." -ForegroundColor Cyan
-    [void](Read-Host)
-    return $true
 }
 
-do {
-    Show-Menu
-    $selection = Read-Host "`nPlease make a selection"
-} while (Invoke-MenuSelection $selection)
+# Initialize the module
+Write-Host "Initializing windozing..." -ForegroundColor Gray
+if (-not (Initialize-Windozing)) {
+    Write-Error "Failed to initialize windozing module"
+    Write-Host "Please ensure you have administrator privileges and try again." -ForegroundColor Red
+    Read-Host "Press Enter to exit"
+    exit 1
+}
+
+# Clear screen and show the main menu
+Clear-Host
+Show-Menu

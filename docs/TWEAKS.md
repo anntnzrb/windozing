@@ -9,6 +9,7 @@ This document provides detailed information about each tweak available in windoz
 - [Mouse Tweaks](#mouse-tweaks)
 - [Gaming Tweaks](#gaming-tweaks)
 - [Power Tweaks](#power-tweaks)
+- [Privacy Tweaks](#privacy-tweaks)
 
 ## Performance Tweaks
 
@@ -154,9 +155,75 @@ This document provides detailed information about each tweak available in windoz
 4. **Reversibility**: All registry tweaks can be reversed by restoring from backup or setting original values.
 5. **Updates**: Windows updates may occasionally reset some of these tweaks.
 
+## Privacy Tweaks
+
+### Telemetry and Data Collection
+
+#### Telemetry Level
+- **Registry Paths**:
+  - `HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection` - `AllowTelemetry` = 0
+  - `HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection` - `AllowTelemetry` = 0
+- **Description**: Sets Windows telemetry to Security level (0), which is the minimum data collection allowed. On non-Enterprise editions, this effectively sets it to Basic level.
+
+### User Privacy
+
+#### Advertising ID
+- **Registry Path**: `HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo`
+- **Key**: `Enabled`
+- **Value**: 0
+- **Description**: Disables the advertising ID used for personalized ads across apps.
+
+#### Activity History
+- **Registry Path**: `HKLM:\SOFTWARE\Policies\Microsoft\Windows\System`
+- **Key**: `EnableActivityFeed`
+- **Value**: 0
+- **Description**: Disables Windows activity history and timeline feature.
+
+#### Location Tracking
+- **Registry Path**: `HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location`
+- **Key**: `Value`
+- **Value**: "Deny"
+- **Description**: Disables location services system-wide for all apps and services.
+
+### Personalization and Feedback
+
+#### Feedback Frequency
+- **Registry Path**: `HKCU:\Software\Microsoft\Siuf\Rules`
+- **Key**: `NumberOfSIUFInPeriod`
+- **Value**: 0
+- **Description**: Disables Windows feedback notifications and prompts.
+
+#### Tailored Experiences
+- **Registry Path**: `HKCU:\Software\Microsoft\Windows\CurrentVersion\Privacy`
+- **Key**: `TailoredExperiencesWithDiagnosticDataEnabled`
+- **Value**: 0
+- **Description**: Prevents Windows from using diagnostic data to provide tailored experiences.
+
+### Input Personalization
+
+#### Inking and Typing
+- **Registry Path**: `HKCU:\Software\Microsoft\Windows\CurrentVersion\CPSS\Store\InkingAndTypingPersonalization`
+- **Key**: `Value`
+- **Value**: 0
+- **Description**: Disables collection of inking and typing data for personalization.
+
+#### Speech Recognition
+- **Registry Path**: `HKCU:\Software\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy`
+- **Key**: `HasAccepted`
+- **Value**: 0
+- **Description**: Disables online speech recognition and prevents voice data from being sent to Microsoft.
+
+### App Behavior
+
+#### App Launch Tracking
+- **Registry Path**: `HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced`
+- **Key**: `Start_TrackProgs`
+- **Value**: 0
+- **Description**: Disables tracking of app launches for Start menu suggestions and search results.
+
 ## Risk Levels
 
-- **Low Risk**: Mouse, Gaming tweaks - Generally safe for all systems
+- **Low Risk**: Mouse, Gaming, Privacy tweaks - Generally safe for all systems
 - **Medium Risk**: Performance, Network tweaks - May need adjustment based on hardware
 - **High Risk**: None currently (removed from default configuration)
 

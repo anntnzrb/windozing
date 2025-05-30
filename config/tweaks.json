@@ -178,5 +178,94 @@
         "description": "Disable hardware-accelerated GPU scheduling"
       }
     ]
+  },
+  "privacy": {
+    "name": "Privacy Settings",
+    "description": "Disable telemetry and data collection features",
+    "risk": "low",
+    "requires_restart": false,
+    "windows_versions": ["10", "11"],
+    "tweaks": [
+      {
+        "id": "telemetry-level",
+        "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+        "key": "AllowTelemetry",
+        "value": 0,
+        "type": "DWord",
+        "description": "Set telemetry to Security level (minimal data collection)"
+      },
+      {
+        "id": "diagnostic-data",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+        "key": "AllowTelemetry",
+        "value": 0,
+        "type": "DWord",
+        "description": "Minimize diagnostic data collection"
+      },
+      {
+        "id": "advertising-id",
+        "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+        "key": "Enabled",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable advertising ID for personalized ads"
+      },
+      {
+        "id": "activity-history",
+        "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+        "key": "EnableActivityFeed",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable Windows activity history"
+      },
+      {
+        "id": "location-tracking",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location",
+        "key": "Value",
+        "value": "Deny",
+        "type": "String",
+        "description": "Disable location tracking system-wide"
+      },
+      {
+        "id": "feedback-frequency",
+        "path": "HKCU:\\Software\\Microsoft\\Siuf\\Rules",
+        "key": "NumberOfSIUFInPeriod",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable Windows feedback prompts"
+      },
+      {
+        "id": "tailored-experiences",
+        "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+        "key": "TailoredExperiencesWithDiagnosticDataEnabled",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable tailored experiences based on diagnostic data"
+      },
+      {
+        "id": "inking-typing",
+        "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\CPSS\\Store\\InkingAndTypingPersonalization",
+        "key": "Value",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable inking and typing personalization"
+      },
+      {
+        "id": "speech-data",
+        "path": "HKCU:\\Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy",
+        "key": "HasAccepted",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable online speech recognition"
+      },
+      {
+        "id": "app-launch-tracking",
+        "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "key": "Start_TrackProgs",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable app launch tracking for Start menu"
+      }
+    ]
   }
 }

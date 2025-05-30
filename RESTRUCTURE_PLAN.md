@@ -37,8 +37,6 @@ windozing/
 │   │   ├── Game.ps1
 │   │   └── Privacy.ps1     # New: privacy tweaks
 │   │
-│   ├── packages/
-│   │   └── ChocolateyManager.ps1
 │   │
 │   └── utilities/
 │       ├── Registry.ps1     # Registry helpers
@@ -47,7 +45,6 @@ windozing/
 │
 ├── config/
 │   ├── tweaks.json         # Tweak definitions
-│   ├── packages.json       # Package definitions with metadata
 │   └── defaults.json       # Default settings
 │
 ├── scripts/
@@ -149,9 +146,6 @@ windozing backup restore --name "before-gaming-tweaks"
 windozing status
 windozing report --format html
 
-# Package management
-windozing packages install --category development
-windozing packages list --installed
 
 # Configuration
 windozing config set log-level verbose
@@ -175,37 +169,7 @@ windozing config export --file my-config.json
 - Structured format for parsing
 - Rotation and archival
 
-### 6. Package Management Enhancement
-
-#### Enhanced Package Configuration
-```json
-// config/packages.json
-{
-  "categories": {
-    "development": {
-      "name": "Development Tools",
-      "packages": {
-        "git": {
-          "id": "git.install",
-          "description": "Distributed version control system",
-          "version": "latest",
-          "optional": false,
-          "dependencies": []
-        },
-        "neovim": {
-          "id": "neovim",
-          "description": "Vim-based text editor",
-          "version": "latest",
-          "optional": true,
-          "alternatives": ["notepadplusplus.install", "vscode"]
-        }
-      }
-    }
-  }
-}
-```
-
-### 7. Testing Framework
+### 6. Testing Framework
 
 #### Pester Tests
 - Unit tests for each module function
@@ -244,8 +208,7 @@ windozing config export --file my-config.json
 ### Phase 4: Enhanced Features
 1. Implement new CLI commands
 2. Add reporting functionality
-3. Create package management enhancements
-4. Add privacy tweaks category
+3. Add privacy tweaks category
 
 ### Phase 5: Testing and Documentation
 1. Write Pester tests

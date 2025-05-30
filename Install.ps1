@@ -55,7 +55,7 @@ try {
     New-Item -ItemType Directory -Path $tempPath -Force | Out-Null
     
     Write-Host "Downloading windozing from GitHub..." -ForegroundColor Gray
-    $downloadUrl = "https://github.com/yourusername/windozing/archive/refs/heads/$Branch.zip"
+    $downloadUrl = "https://github.com/anntnzrb/windozing/archive/refs/heads/$Branch.zip"
     
     try {
         Invoke-WebRequest -Uri $downloadUrl -OutFile $zipPath -UseBasicParsing
@@ -92,7 +92,7 @@ try {
     Write-Host "  2. Initialize windozing: Initialize-Windozing" -ForegroundColor White
     Write-Host "  3. Show the menu: Show-Menu" -ForegroundColor White
     Write-Host ""
-    Write-Host "For more information, visit: https://github.com/yourusername/windozing" -ForegroundColor Gray
+    Write-Host "For more information, visit: https://github.com/anntnzrb/windozing" -ForegroundColor Gray
     
 }
 catch {

@@ -155,7 +155,25 @@ function Invoke-Tweak {
         $tweaksToApply = $tweaksToApply | Where-Object { $TweakIds -contains $_.id }
     }
     
-    if ($tweaksToApply.Count -eq 0) {
+    # Filter interface tweaks if specific IDs provided
+    $interfaceTweaksToApply = @()
+    if ($categoryConfig.interface_tweaks) {
+        $interfaceTweaksToApply = $categoryConfig.interface_tweaks
+        if ($TweakIds) {
+            $interfaceTweaksToApply = $interfaceTweaksToApply | Where-Object { $TweakIds -contains $_.id }
+        }
+    }
+    
+    # Filter power commands if specific IDs provided
+    $powerCommandsToApply = @()
+    if ($categoryConfig.power_commands) {
+        $powerCommandsToApply = $categoryConfig.power_commands
+        if ($TweakIds) {
+            $powerCommandsToApply = $powerCommandsToApply | Where-Object { $TweakIds -contains $_.id }
+        }
+    }
+    
+    if ($tweaksToApply.Count -eq 0 -and $interfaceTweaksToApply.Count -eq 0 -and $powerCommandsToApply.Count -eq 0) {
         Write-WarnLog "No tweaks to apply" -Category "Tweak"
         return $true
     }
@@ -173,15 +191,31 @@ function Invoke-Tweak {
     if ($BackupFirst) {
         Write-InfoLog "Creating backup before applying tweaks..." -Category "Backup"
         
+        # Collect registry paths from regular tweaks
         $registryPaths = $tweaksToApply | ForEach-Object { $_.path } | Select-Object -Unique
-        $backupInfo = New-RegistryBackup -RegistryPaths $registryPaths -Name "$Category-backup" -Description "Backup before $Category tweaks"
         
-        if ($backupInfo) {
-            Write-SuccessLog "Backup created: $($backupInfo.name) (ID: $($backupInfo.id))" -Category "Backup"
+        # Add network interface paths if interface tweaks are present
+        if ($interfaceTweaksToApply.Count -gt 0) {
+            # Import Network utilities
+            $networkUtilPath = Join-Path $script:ModulePath "src\utilities\Network.ps1"
+            if (Test-Path $networkUtilPath) {
+                . $networkUtilPath
+                $interfacePaths = Get-NetworkInterfaceTweakPaths
+                $registryPaths += $interfacePaths
+                $registryPaths = $registryPaths | Select-Object -Unique
+            }
         }
-        else {
-            Write-ErrorLog "Failed to create backup" -Category "Backup"
-            return $false
+        
+        if ($registryPaths.Count -gt 0) {
+            $backupInfo = New-RegistryBackup -RegistryPaths $registryPaths -Name "$Category-backup" -Description "Backup before $Category tweaks"
+            
+            if ($backupInfo) {
+                Write-SuccessLog "Backup created: $($backupInfo.name) (ID: $($backupInfo.id))" -Category "Backup"
+            }
+            else {
+                Write-ErrorLog "Failed to create backup" -Category "Backup"
+                return $false
+            }
         }
     }
     
@@ -189,6 +223,7 @@ function Invoke-Tweak {
     $appliedCount = 0
     $failedCount = 0
     
+    # Apply regular tweaks
     foreach ($tweak in $tweaksToApply) {
         if ($DryRun) {
             Write-InfoLog "[DRY RUN] Would apply: $($tweak.id) - $($tweak.description)" -Category "Tweak"
@@ -212,6 +247,78 @@ function Invoke-Tweak {
                 Write-ErrorLog "Failed to apply $($tweak.id): $_" -Category "Tweak"
                 $failedCount++
             }
+        }
+    }
+    
+    # Apply interface tweaks
+    if ($interfaceTweaksToApply.Count -gt 0) {
+        # Import Network utilities
+        $networkUtilPath = Join-Path $script:ModulePath "src\utilities\Network.ps1"
+        if (Test-Path $networkUtilPath) {
+            . $networkUtilPath
+            
+            Write-InfoLog "Applying tweaks to network interfaces..." -Category "Tweak"
+            
+            try {
+                $interfaceResults = Apply-NetworkInterfaceTweaks -InterfaceTweaks $interfaceTweaksToApply -ActiveOnly -Force:$Force -DryRun:$DryRun
+                
+                foreach ($result in $interfaceResults) {
+                    if ($result.Success) {
+                        if (-not $result.DryRun) {
+                            Write-SuccessLog "Applied $($result.TweakId) to $($result.FriendlyName)" -Category "Tweak"
+                        }
+                        $appliedCount++
+                    }
+                    else {
+                        Write-ErrorLog "Failed to apply $($result.TweakId) to $($result.FriendlyName)" -Category "Tweak"
+                        $failedCount++
+                    }
+                }
+            }
+            catch {
+                Write-ErrorLog "Failed to apply interface tweaks: $_" -Category "Tweak"
+                $failedCount += $interfaceTweaksToApply.Count
+            }
+        }
+        else {
+            Write-ErrorLog "Network utilities not found, skipping interface tweaks" -Category "Tweak"
+            $failedCount += $interfaceTweaksToApply.Count
+        }
+    }
+    
+    # Apply power commands
+    if ($powerCommandsToApply.Count -gt 0) {
+        # Import Power utilities
+        $powerUtilPath = Join-Path $script:ModulePath "src\utilities\Power.ps1"
+        if (Test-Path $powerUtilPath) {
+            . $powerUtilPath
+            
+            Write-InfoLog "Applying power management tweaks..." -Category "Tweak"
+            
+            try {
+                $powerResults = Apply-PowerTweaks -PowerCommands $powerCommandsToApply -DryRun:$DryRun
+                
+                foreach ($result in $powerResults) {
+                    if ($result.Success) {
+                        if (-not $result.DryRun) {
+                            Write-SuccessLog "Applied power command: $($result.CommandId)" -Category "Tweak"
+                        }
+                        $appliedCount++
+                    }
+                    else {
+                        Write-ErrorLog "Failed to apply power command $($result.CommandId): $($result.Error)" -Category "Tweak"
+                        $failedCount++
+                    }
+                }
+            }
+            catch {
+                Write-ErrorLog "Failed to apply power commands: $_" -Category "Tweak"
+                $failedCount += $powerCommandsToApply.Count
+            }
+        }
+        else {
+            Write-ErrorLog "Power utilities not found, skipping power commands" -Category "Tweak"
+            $failedCount += $powerCommandsToApply.Count
         }
     }
     

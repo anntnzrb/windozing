@@ -1,0 +1,182 @@
+{
+  "performance": {
+    "name": "Performance Optimizations",
+    "description": "System responsiveness and process priority tweaks",
+    "risk": "medium",
+    "requires_restart": false,
+    "windows_versions": ["10", "11"],
+    "tweaks": [
+      {
+        "id": "system-responsiveness",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+        "key": "SystemResponsiveness",
+        "value": 0,
+        "type": "DWord",
+        "description": "Prioritize foreground applications over background tasks"
+      },
+      {
+        "id": "mmcss-game-affinity",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+        "key": "Affinity",
+        "value": 0,
+        "type": "DWord",
+        "description": "Allow games to run on all CPU cores"
+      },
+      {
+        "id": "mmcss-game-background",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+        "key": "Background Only",
+        "value": "False",
+        "type": "String",
+        "description": "Ensure games don't run as background-only processes"
+      },
+      {
+        "id": "mmcss-game-clockrate",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+        "key": "Clock Rate",
+        "value": 2710,
+        "type": "DWord",
+        "description": "Set clock resolution for game tasks (10kHz)"
+      },
+      {
+        "id": "mmcss-game-gpu-priority",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+        "key": "GPU Priority",
+        "value": 8,
+        "type": "DWord",
+        "description": "Set high GPU priority for games"
+      },
+      {
+        "id": "mmcss-game-priority",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+        "key": "Priority",
+        "value": 6,
+        "type": "DWord",
+        "description": "Set CPU priority level for game tasks"
+      },
+      {
+        "id": "mmcss-game-scheduling",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+        "key": "Scheduling Category",
+        "value": "High",
+        "type": "String",
+        "description": "Set high scheduling priority for games"
+      },
+      {
+        "id": "mmcss-game-sfio",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+        "key": "SFIO Priority",
+        "value": "High",
+        "type": "String",
+        "description": "Set high scheduled file I/O priority for games"
+      },
+      {
+        "id": "large-system-cache",
+        "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management",
+        "key": "LargeSystemCache",
+        "value": 0,
+        "type": "DWord",
+        "description": "Optimize memory for programs rather than file system cache"
+      },
+      {
+        "id": "priority-separation",
+        "path": "HKLM:\\SYSTEM\\ControlSet001\\Control\\PriorityControl",
+        "key": "Win32PrioritySeparation",
+        "value": 40,
+        "type": "DWord",
+        "description": "Optimize CPU scheduling for foreground applications"
+      }
+    ]
+  },
+  "network": {
+    "name": "Network Optimizations",
+    "description": "TCP/IP and network latency tweaks",
+    "risk": "low",
+    "requires_restart": false,
+    "windows_versions": ["10", "11"],
+    "tweaks": [
+      {
+        "id": "network-throttling",
+        "path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+        "key": "NetworkThrottlingIndex",
+        "value": 4294967295,
+        "type": "DWord",
+        "description": "Disable network throttling for multimedia applications"
+      }
+    ]
+  },
+  "mouse": {
+    "name": "Mouse Settings",
+    "description": "Mouse sensitivity and acceleration tweaks",
+    "risk": "low",
+    "requires_restart": false,
+    "windows_versions": ["10", "11"],
+    "tweaks": [
+      {
+        "id": "mouse-sensitivity",
+        "path": "HKCU:\\Control Panel\\Mouse",
+        "key": "MouseSensitivity",
+        "value": 10,
+        "type": "DWord",
+        "description": "Set mouse sensitivity to default (6th notch)"
+      },
+      {
+        "id": "mouse-acceleration",
+        "path": "HKCU:\\Control Panel\\Mouse",
+        "key": "MouseSpeed",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable mouse acceleration for consistent movement"
+      }
+    ]
+  },
+  "game": {
+    "name": "Gaming Optimizations",
+    "description": "Disable Game Mode and hardware GPU scheduling",
+    "risk": "low",
+    "requires_restart": true,
+    "windows_versions": ["10", "11"],
+    "tweaks": [
+      {
+        "id": "auto-game-mode",
+        "path": "HKCU:\\Software\\Microsoft\\GameBar",
+        "key": "AutoGameModeEnabled",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable automatic Game Mode activation"
+      },
+      {
+        "id": "allow-auto-game-mode",
+        "path": "HKCU:\\Software\\Microsoft\\GameBar",
+        "key": "AllowAutoGameMode",
+        "value": 0,
+        "type": "DWord",
+        "description": "Prevent Windows from automatically enabling Game Mode"
+      },
+      {
+        "id": "game-dvr",
+        "path": "HKCU:\\System\\GameConfigStore",
+        "key": "GameDVR_Enabled",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable Game DVR recording feature"
+      },
+      {
+        "id": "game-dvr-policy",
+        "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR",
+        "key": "AllowGameDVR",
+        "value": 0,
+        "type": "DWord",
+        "description": "Enforce Game DVR disabled policy system-wide"
+      },
+      {
+        "id": "hw-gpu-scheduling",
+        "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers",
+        "key": "HwSchMode",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable hardware-accelerated GPU scheduling"
+      }
+    ]
+  }
+}

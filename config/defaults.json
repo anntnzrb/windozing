@@ -1,0 +1,16 @@
+{
+  "log_level": "INFO",
+  "console_output": true,
+  "file_output": true,
+  "max_log_file_size_mb": 10,
+  "max_log_files": 5,
+  "backup_retention_days": 30,
+  "max_backups": 50,
+  "require_admin": true,
+  "confirm_high_risk": true,
+  "auto_backup": true,
+  "dry_run_default": false,
+  "supported_windows_versions": ["10", "11"],
+  "min_disk_space_mb": 100,
+  "explorer_restart_delay_ms": 2000
+}

@@ -91,8 +91,8 @@
   "network": {
     "name": "Network Optimizations",
     "description": "TCP/IP and network latency tweaks",
-    "risk": "low",
-    "requires_restart": false,
+    "risk": "medium",
+    "requires_restart": true,
     "windows_versions": ["10", "11"],
     "tweaks": [
       {
@@ -102,6 +102,29 @@
         "value": 4294967295,
         "type": "DWord",
         "description": "Disable network throttling for multimedia applications"
+      }
+    ],
+    "interface_tweaks": [
+      {
+        "id": "tcp-ack-frequency",
+        "key": "TcpAckFrequency",
+        "value": 1,
+        "type": "DWord",
+        "description": "Send immediate TCP acknowledgments instead of delaying, reducing latency"
+      },
+      {
+        "id": "tcp-del-ack-ticks",
+        "key": "TcpDelAckTicks",
+        "value": 0,
+        "type": "DWord",
+        "description": "Disable delayed acknowledgments to reduce latency"
+      },
+      {
+        "id": "tcp-no-delay",
+        "key": "TCPNoDelay",
+        "value": 1,
+        "type": "DWord",
+        "description": "Disable Nagle's algorithm for reduced latency in real-time applications"
       }
     ]
   },
@@ -265,6 +288,24 @@
         "value": 0,
         "type": "DWord",
         "description": "Disable app launch tracking for Start menu"
+      }
+    ]
+  },
+  "power": {
+    "name": "Power Management",
+    "description": "High-performance power plan and USB power saving tweaks",
+    "risk": "medium",
+    "requires_restart": false,
+    "windows_versions": ["10", "11"],
+    "power_commands": [
+      {
+        "id": "ultimate-performance",
+        "description": "Enable Ultimate Performance power plan for maximum performance"
+      },
+      {
+        "id": "usb-selective-suspend",
+        "enabled": false,
+        "description": "Disable USB selective suspend to prevent input device disconnections"
       }
     ]
   }
